@@ -1,0 +1,11 @@
+.shootButton {
+    @apply bg-[#EC7846] size-16 rounded-full;
+}
+
+.changeModeButton {
+    @apply relative size-16
+}
+
+.placeholder {
+    @apply size-16
+}

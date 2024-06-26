@@ -1,0 +1,71 @@
+.chatPage {
+    @apply h-full flex flex-col
+}
+
+.userHeader {
+    @apply flex items-center justify-end mx-3 mt-5 mb-3;
+}
+
+.userButton {
+    @apply rounded-full bg-[#EC7846] size-14 p-2
+}
+
+.userButton > div {
+    @apply size-full relative
+}
+
+.chatInputContainer {
+    @apply flex h-14 items-center justify-end px-5 gap-2;
+}
+
+.sendButton {
+    @apply relative size-8
+}
+
+.chatInput {
+    @apply rounded-2xl bg-[#0E3D6C] text-[#F1FFFA] px-2 w-2/3 h-8;
+}
+
+.chatContainer {
+    @apply flex flex-col flex-1 p-5 gap-2 overflow-y-scroll;
+}
+
+.chatBubble {
+    @apply flex gap-2 w-5/6
+}
+
+.chatBubble > p {
+    @apply text-sm rounded-2xl px-3 py-2 self-center;
+}
+
+.chatBubbleAvatar {
+    @apply size-10 rounded-full p-2 flex-shrink-0 flex-grow-0;
+}
+
+.chatBubbleAvatar > div {
+    @apply relative size-full
+}
+
+.chatBubbleAssistantAvatar {
+    @apply chatBubbleAvatar bg-[#EC7846]
+}
+
+.chatBubbleAssistant {
+    @apply chatBubble self-start
+}
+
+.chatBubbleAssistant > p {
+    @apply bg-[#EC7846] text-[#F1FFFA]
+}
+
+.chatBubbleUserAvatar {
+    @apply chatBubbleAvatar bg-[#0E3D6C]
+}
+
+.chatBubbleUser {
+    @apply chatBubble self-end
+}
+
+.chatBubbleUser > p {
+    @apply bg-[#0E3D6C] text-[#F1FFFA];
+}

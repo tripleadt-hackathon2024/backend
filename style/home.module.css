@@ -1,0 +1,7 @@
+.cameraContainer {
+    @apply relative size-full;
+}
+
+.webcam {
+    @apply top-0 left-0 min-h-full min-w-full object-cover
+}

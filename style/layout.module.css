@@ -1,0 +1,11 @@
+.mainContainer {
+    @apply grid grid-rows-10 gap-1 h-screen overflow-hidden bg-black;
+}
+
+.mainContent {
+    @apply order-first row-span-9 bg-[#F1FFFA] rounded-b-3xl overflow-hidden;
+}
+
+.headerContainer {
+    @apply flex flex-row items-center justify-around;
+}
