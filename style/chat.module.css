@@ -31,11 +31,11 @@
 }
 
 .chatBubble {
-    @apply flex gap-2 w-5/6
+    @apply flex gap-2
 }
 
 .chatBubble > p {
-    @apply text-sm rounded-2xl px-3 py-2 self-center;
+    @apply flex text-sm rounded-2xl px-3 py-2 self-center;
 }
 
 .chatBubbleAvatar {

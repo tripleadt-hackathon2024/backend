@@ -1,16 +1,21 @@
 "use client";
-import homeStyle from "@style/home.module.css";
-import layoutStyle from "@style/layout.module.css";
-import Webcam from "react-webcam";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import headerStyle from "@style/header.module.css";
 import Image from "next/image";
+import Webcam from "react-webcam";
+
+import { useWindowSize } from "usehooks-ts";
+
+import homeStyle from "@style/home.module.css";
+import headerStyle from "@style/header.module.css";
+import layoutStyle from "@style/layout.module.css";
 
 export default function Home() {
-    const videoConstraint: MediaStreamConstraints["video"] = {
-        width: screen.width,
-        height: screen.height,
+    const { width = 0, height = 0 } = useWindowSize();
+    const videoConstraints: MediaStreamConstraints["video"] = {
+        width: width,
+        height: height,
         facingMode: "environment"
     };
     const webcamRef = useRef<Webcam>(null);
@@ -33,7 +38,8 @@ export default function Home() {
 
             fetch("http://localhost:8000/detectObject", {
                 method: "POST",
-                body: formData
+                body: formData,
+                cache: "no-cache"
             }).then((r) => {
                 r.json().then(r => {
                     setMessage(r["response"]);
@@ -93,7 +99,7 @@ export default function Home() {
                 </div>
                 <div className={layoutStyle.mainContent}>
                     <div className={homeStyle.cameraContainer}>
-                        <Webcam className={homeStyle.webcam} videoConstraints={videoConstraint} ref={webcamRef}/>
+                        <Webcam className={homeStyle.webcam} videoConstraints={videoConstraints} ref={webcamRef}/>
                     </div>
                 </div>
             </div>
