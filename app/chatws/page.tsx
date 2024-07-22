@@ -6,6 +6,8 @@ import Image from "next/image";
 
 import { ChangeEvent, useEffect, useState } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import useWebSocket from "react-use-websocket";
+
 import ChatSection from "@component/chat/ChatSection";
 
 import chatStyle from "@style/chat.module.css";
@@ -18,6 +20,20 @@ export default function Chat() {
         role: "user" | "assistant",
         content: string
     }[]>([]);
+    const [chatReady, setChatReady] = useState<boolean>(true);
+    const {sendJsonMessage} = useWebSocket("ws://localhost:8000/ws", {
+        retryOnError: true,
+        onMessage: (message) => {
+            let dataJson = JSON.parse(message.data);
+            if (Object.keys(dataJson).includes("content")) {
+                let tempChatHistory = chatHistory;
+                chatHistory[chatHistory.length - 1].content += dataJson["content"];
+                setChatHistory((tempChatHistory));
+            } else {
+                setChatReady(true);
+            }
+        }
+    });
     const {
         transcript,
         listening,
@@ -36,7 +52,7 @@ export default function Chat() {
                     key: localStorage.getItem("key")
                 })
             });
-            if (checkKeyFetch.status == 400) {
+            if (checkKeyFetch.status == 400 || checkKeyFetch.status == 422) {
                 const responseKey = await fetch("http://localhost:8000/generateUserID");
                 const data = await responseKey.json();
                 localStorage.setItem("key", data.key);
@@ -82,27 +98,20 @@ export default function Chat() {
 
     async function handleSendMessage() {
         const userChatMessage = messageText;
-        setMessageText("");
-        setChatHistory((chatHistory) => [
-            ...chatHistory,
-            {role: "user", content: userChatMessage}
-        ]);
-        let chatFetch = await fetch("http://localhost:8000/generateChat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
+        if (chatReady) {
+            setMessageText("");
+            setChatHistory((chatHistory) => [
+                ...chatHistory,
+                {role: "user", content: userChatMessage},
+                {role: "assistant", content: ""}
+            ]);
+            sendJsonMessage({
                 key: localStorage.getItem("key"),
-                message: userChatMessage
-            })
-        });
-
-        let chatData = await chatFetch.json();
-        if (chatFetch.ok) setChatHistory((chatHistory) => [
-            ...chatHistory,
-            chatData
-        ]);
+                command: "generateChat",
+                message: userChatMessage,
+            });
+            setChatReady(false);
+        }
     }
 
     return (
